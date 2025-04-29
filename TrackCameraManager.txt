@@ -1,0 +1,93 @@
+Class TrackCameraUIManager
+
+    Variables:
+        Reference to TrackCameraManager
+        UI Sliders: trackHeight, trackRadius, screenshotStartAngle, screenshotCount, fieldOfView, centerLookAtHeight
+        UI Buttons: captureTrackScreenshots, captureUserScreenshots, cycleForwardCameraPreview, cycleBackCameraPreview
+        Text Labels: trackHeightText, trackRadiusText, screenshotStartAngleText, screenshotCountText, fieldOfViewText, centerLookAtHeightText, liveViewHeaderText
+        Default Values: trackHeight, trackRadius, screenshotStartAngle, screenshotCount, fieldOfView, centerLookAtHeight
+
+    Method Start:
+        Set min/max values for sliders
+        Set slider default values
+        Register slider value change callbacks
+        Register button click listeners
+        Subscribe to DataLoaderManager event to call Init
+
+    Method OnEnable:
+        Subscribe to DataLoaderManager event
+
+    Method OnDisable / OnDestroy:
+        Unsubscribe from DataLoaderManager event
+
+    Method Init(dataHasLoaded):
+        Update all settings using default values
+        Update UI capture point header text
+
+    Method TakeTrackScreenshots:
+        If screenshot controller exists:
+            Get formatted timestep string
+            Instruct screenshot controller to take track screenshots
+
+    Method TakeUserScreenshots:
+        If screenshot controller exists:
+            Get formatted timestep string
+            Instruct screenshot controller to take user screenshots
+
+    Method UpdateTrackHeight(value):
+        If controllers exist:
+            Update track height in track controller
+            Recalculate capture points
+            Notify controllers of state change
+            Update corresponding label text
+
+    Method UpdateTrackRadius(value):
+        If controllers exist:
+            Update padding in track controller
+            Recalculate capture points
+            Notify controllers of state change
+            Update corresponding label text
+
+    Method UpdateScreenshotStartAngle(value):
+        If controller exists:
+            Update start angle
+            Recalculate capture points
+            Notify controllers of state change
+            Update label text
+
+    Method UpdateScreenshotCount(value):
+        If controller exists:
+            Update number of screenshots (convert to int)
+            Recalculate capture points
+            Notify controllers of state change
+            Update label text
+
+    Method UpdateFieldOfView(value):
+        If screenshot controller exists:
+            Update field of view
+            Notify controller of state change
+            Update label text
+
+    Method UpdateCenterLookAtHeight(value):
+        If controller exists:
+            Update camera target height
+            Notify controllers of state change
+            Update label text
+
+    Method GoToNextCapturePoint:
+        If controller exists:
+            Move to next capture point
+            Notify controllers of state change
+            Update header label
+
+    Method GoToPreviousCapturePoint:
+        If controller exists:
+            Move to previous capture point
+            Notify controllers of state change
+            Update header label
+
+    Method UpdateCurrentCapturePointLabel:
+        Get current monitor point index
+        Set monitoring point in controller
+        Notify controller of state change
+        Update UI text to show current capture point
