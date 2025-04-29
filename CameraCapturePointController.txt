@@ -1,0 +1,33 @@
+CameraCapturePointController
+
+Variables:
+- cameraCaptureText : text display component
+- camera3DIcon : 3D icon GameObject
+- camera3DIconMR : mesh renderer for the 3D icon
+- startColor : color used when camera is inactive
+- monitorColor : color used when monitoring
+- activeColor : current active color of the icon
+- isActive : boolean indicating if the camera point is active
+- camera3DIconTextValue : text label for the 3D icon
+
+Start Function:
+IF isActive is TRUE THEN
+    set camera3DIconMR color to monitorColor
+ELSE
+    set camera3DIconMR color to startColor
+END IF
+
+Function SetMonitorColor:
+    call ChangeColor with monitorColor
+    set isActive to TRUE
+
+Function DisableMonitor:
+    call ChangeColor with startColor
+    set isActive to FALSE
+
+Function ChangeColor(color):
+    set camera3DIconMR color to color
+    set activeColor to color
+
+Function IsActive:
+    RETURN isActive

@@ -1,0 +1,62 @@
+TrackTypeDropdown (Custom Inspector for TrackController)
+
+Variables:
+- trackList : serialized reference to list of tracks
+- track : serialized reference to currently selected track
+- trackType : serialized reference to the type of track
+- selectedIndex : integer representing selected track index
+
+Function OnEnable:
+    Find serialized properties: trackList, track, trackType
+    Call UpdateSelectedIndex()
+
+Function OnInspectorGUI:
+    Begin updating serialized object
+
+    Call DisplayTrackDropdown()
+
+    Add space and label: "Current Track Type"
+    Disable GUI input
+    Show trackType property as read-only
+    Enable GUI input
+
+    Add space
+    Display trackList in inspector with foldout
+
+    Iterate over all serialized properties:
+        Skip "m_Script", "track", "trackList", "trackType"
+        Display remaining properties in inspector
+
+    Apply modified properties to serialized object
+
+Function DisplayTrackDropdown:
+    Add space and label: "Track Selection"
+
+    IF trackList is an array AND has elements THEN
+        Create array of track names by calling GetTrackNames()
+        Show dropdown popup with track names
+        IF selected index changes THEN
+            Update selectedIndex
+            Get selected GameObject from trackList at selectedIndex
+            Set track and trackType to selected GameObject
+            Call SetTrack on the actual TrackController with the selected GameObject
+            Apply changes and repaint editor views
+    ELSE
+        Show warning message: "No tracks available!"
+
+Function GetTrackNames:
+    FOR each element in trackList:
+        IF element has a reference THEN
+            Use GameObject name
+        ELSE
+            Use "Missing Track" + index
+    RETURN array of track names
+
+Function UpdateSelectedIndex:
+    IF trackList is empty THEN return
+
+    Get current selected track from track
+    FOR each element in trackList:
+        IF element equals current track THEN
+            Set selectedIndex to current index
+            BREAK
