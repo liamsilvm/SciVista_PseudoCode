@@ -1,0 +1,85 @@
+CLASS TrackController
+
+    VARIABLES:
+        trackedObject
+        trackCameraStillController
+        trackList (list of tracks)
+        track (current active track)
+        trackType
+
+        numberOfCapturePoints
+        trackRadius
+        useDatasetSize
+        datasetWidth, datasetLength
+        trackheight
+        centerPointHeight
+        useAverageGroundHeight
+        averageGroundHeight
+
+        showTrack
+        trackDrawMode
+        trackPadding
+        showCaptureCameraPoints
+
+        cameraCapturePoint, monitoringCameraCapturePoint
+        centerTarget
+        parent
+
+        trackCameraLayer = "TrackingCamera"
+        trackMeshFilter
+        lineRenderer
+        capturePointsParent
+
+        captureCameraPoints (array of capture point GameObjects)
+        capturePointsLabels (array of strings)
+        capturePoints (array of Vector3)
+        renderPoints, trackPoints (arrays of Vector3)
+        centerPointObject
+        pointRadius
+        hasInitialized
+        monitoringCapturePointIndex
+        datasetTrackRadius
+        lineScalingFactor, capturePointScalingFactor
+        startAngle, increment
+        trackIndex
+METHOD OnStateChange:
+    - Ready the track
+    - If playing, update capture points
+    - Update track dimensions and height
+    - Draw track based on selected mode
+
+METHOD Activate:
+    - If track is ready, trigger OnStateChange
+    - Return success/failure
+
+METHOD GetCapturePointsLabels: return capturePointsLabels
+METHOD GetCapturePoints: return capturePoints
+METHOD GetTrackPoints: return trackPoints
+METHOD GetTrackPointsLength: return length of trackPoints
+METHOD GetNewTrackPosition: return trackPoints[trackIndex]
+METHOD GetTrackIndexVertex(index): clamp and return trackPoints[index]
+
+METHOD UpdateCapturePoints:
+    - Initialize arrays
+    - Determine increment and calculate each capture point
+    - Assign label and position to each capture point
+
+METHOD SetTrack(newTrack): set the track reference
+METHOD UpdateTrack: toggle lineRenderer visibility
+METHOD GetNumberOfCapturePoints: return numberOfCapturePoints
+
+METHOD UpdateTrackDimensions:
+    - If using dataset size, calculate new scale with padding
+    - Else, scale by trackRadius
+    - Redraw lines
+
+METHOD SetTrackHeight:
+    - Add height offset to parent position based on trackheight
+
+METHOD UpdateLineRendererCapturePoints:
+    - Ensure points are visible if enabled
+    - Create or update capture point GameObjects
+    - Set their positions, scale, look direction, and label
+
+METHOD DrawGizmoCapturePoints:
+    - For each

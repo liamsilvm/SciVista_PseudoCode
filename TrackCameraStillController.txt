@@ -1,0 +1,71 @@
+CLASS TrackCameraStillController
+
+    VARIABLES:
+        renderTexture — output texture for UI
+        screenshotTexture — used internally for capturing images
+        screenshotCamera — camera taking the screenshots
+        mainTransform — transform controlling position
+        trackController — link to TrackController
+        capturePoints — positions for screenshots
+        capturePointsLabels — labels for each point
+        screenshotWidth, screenshotHeight — resolution
+        screenshotDirectory — folder name for screenshots
+        fieldOfView — FOV of screenshot camera
+        monitoringCapturePointIndex — active point to monitor
+        various flags — e.g., cameraHasInitiated, cameraIsReady
+        original camera state — position, rotation, FOV
+METHOD Start():
+    (Initialization placeholder)
+
+METHOD Update():
+    (Empty in current code)
+
+METHOD OnValidate():
+    Call OnStateChange()
+
+METHOD OnStateChange():
+    IF trackController exists AND capturePoints exist
+        Clamp monitoringCapturePointIndex within range
+        Move mainTransform to current capture point
+        Update camera settings
+    ELSE
+        Log error if trackController is missing
+METHOD Activate():
+    Call SetupCamera()
+
+METHOD SetupCamera():
+    Resize or create renderTexture
+    Assign renderTexture to screenshotCamera
+    Exclude camera's own layer from capture
+    Mark camera as ready
+
+METHOD RestoreCamera():
+    Jump to monitoring point
+    Restore FOV and direction
+    Reset CapturingUserScreen flag
+METHOD UpdateCapturePointsData(points, labels):
+    Store capture points and labels
+    Clamp monitoringCapturePointIndex
+
+METHOD SetupRenderTexture(camera):
+    Create new screenshotTexture
+    Store original clear flags and background
+    Set minimal clear settings for transparency
+
+METHOD UpdateCameraSettings():
+    Update direction and FOV
+
+METHOD UpdateCameraFOV():
+    Set FOV on screenshotCamera
+
+METHOD UpdateCameraDirection():
+    IF tracking target
+        Look at lookAtTarget
+    ELSE
+        Look at track centerPoint (loop-type)
+METHOD TakeTrackScreenshots(directory, timestep):
+    Take screenshots of all capture points
+    Reassign renderTexture afterward
+
+METHOD TakeUserScreenshots(directory, timestep):
+    Enable CapturingUserScreen flag
